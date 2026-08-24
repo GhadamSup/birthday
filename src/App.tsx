@@ -1,5 +1,5 @@
-import { AnimatePresence } from "motion/react";
 import { useState } from "react";
+import { AnimatePresence } from "motion/react";
 
 import AppShell from "./components/AppShell";
 import StatusBar from "./components/StatusBar";
@@ -8,30 +8,93 @@ import HomeIndicator from "./components/HomeIndicator";
 import LockScreen from "./screens/LockScreen";
 import HomeScreen from "./screens/HomeScreen";
 
-type Screen = "lock" | "home";
+import MessagesApp from "./apps/MessagesApp";
+import GalleryApp from "./apps/GalleryApp";
+import MusicApp from "./apps/MusicApp";
+
+type Screen =
+  | {
+    type: "lock";
+  }
+  | {
+    type: "home";
+  }
+  | {
+    type: "app";
+    appId: string;
+  };
 
 export default function App() {
-  const [screen, setScreen] =
-    useState<Screen>("lock");
+  const [screen, setScreen] = useState<Screen>({
+    type: "lock",
+  });
+
+  const goHome = () => {
+    setScreen({
+      type: "home",
+    });
+  };
+
+  const openApp = (appId: string) => {
+    setScreen({
+      type: "app",
+      appId,
+    });
+  };
 
   return (
     <AppShell>
       <StatusBar />
 
       <AnimatePresence mode="wait">
-        {screen === "lock" ? (
+        {screen.type === "lock" && (
           <LockScreen
             key="lock"
-            onUnlock={() => setScreen("home")}
-          />
-        ) : (
-          <HomeScreen
-            key="home"
-            onOpenApp={() => {
-              console.log("App clicked");
+            onUnlock={() => {
+              setScreen({
+                type: "home",
+              });
             }}
           />
         )}
+
+        {screen.type === "home" && (
+          <HomeScreen
+            key="home"
+            onOpenApp={openApp}
+          />
+        )}
+
+        {screen.type === "app" &&
+          screen.appId === "messages" && (
+            <MessagesApp
+              key="messages"
+              onBack={goHome}
+              onContinue={() => {
+                openApp("photos");
+              }}
+            />
+          )}
+
+        {screen.type === "app" &&
+          screen.appId === "photos" && (
+            <GalleryApp
+              key="gallery"
+              onBack={goHome}
+            />
+          )}
+
+
+        {screen.type === "app" &&
+          screen.appId === "music" && (
+            <MusicApp
+              key="music"
+              onBack={goHome}
+              onContinue={() => {
+                openApp("moments");
+              }}
+            />
+          )}
       </AnimatePresence>
 
       <HomeIndicator />

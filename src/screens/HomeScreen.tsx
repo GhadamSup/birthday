@@ -1,9 +1,66 @@
-import { Heart } from "lucide-react";
+import {
+  Gift,
+  Image,
+  MessageCircle,
+  Music,
+  NotebookPen,
+  Sparkles,
+  Heart,
+} from "lucide-react";
 import { motion } from "motion/react";
 
+import Dock from "../components/Dock";
+
+import AppIcon from "../components/AppIcon";
+
 interface HomeScreenProps {
-  onOpenApp: () => void;
+  onOpenApp: (appId: string) => void;
 }
+
+const apps = [
+  {
+    id: "messages",
+    name: "Messages",
+    icon: MessageCircle,
+    gradient:
+      "linear-gradient(145deg, #69e59b, #209b67)",
+  },
+  {
+    id: "photos",
+    name: "Photos",
+    icon: Image,
+    gradient:
+      "linear-gradient(145deg, #ff9a9e, #a66cff)",
+  },
+  {
+    id: "music",
+    name: "Music",
+    icon: Music,
+    gradient:
+      "linear-gradient(145deg, #ff6f91, #6d4aff)",
+  },
+  {
+    id: "notes",
+    name: "Notes",
+    icon: NotebookPen,
+    gradient:
+      "linear-gradient(145deg, #ffe082, #e6a62c)",
+  },
+  {
+    id: "memories",
+    name: "Memories",
+    icon: Sparkles,
+    gradient:
+      "linear-gradient(145deg, #80d8ff, #536dfe)",
+  },
+  {
+    id: "gift",
+    name: "Gift",
+    icon: Gift,
+    gradient:
+      "linear-gradient(145deg, #ff8fab, #e33d74)",
+  },
+];
 
 export default function HomeScreen({
   onOpenApp,
@@ -47,19 +104,36 @@ export default function HomeScreen({
         </div>
       </header>
 
-      <div className="home-app-placeholder">
-        <motion.button
-          className="placeholder-app glass"
-          whileTap={{ scale: 0.88 }}
-          onClick={onOpenApp}
-        >
-          ✦
-        </motion.button>
-
-        <span>
-          Little App
-        </span>
+      <div className="app-grid">
+        {apps.map((app, index) => (
+          <motion.div
+            key={app.id}
+            initial={{
+              opacity: 0,
+              y: 20,
+              scale: 0.8,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            transition={{
+              delay: 0.08 + index * 0.05,
+              duration: 0.45,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          >
+            <AppIcon
+              name={app.name}
+              icon={app.icon}
+              gradient={app.gradient}
+              onClick={() => onOpenApp(app.id)}
+            />
+          </motion.div>
+        ))}
       </div>
+      <Dock onOpenApp={onOpenApp} />
     </motion.section>
   );
 }
