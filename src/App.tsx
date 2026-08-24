@@ -11,6 +11,7 @@ import HomeScreen from "./screens/HomeScreen";
 import MessagesApp from "./apps/MessagesApp";
 import GalleryApp from "./apps/GalleryApp";
 import MusicApp from "./apps/MusicApp";
+import MomentsApp from "./apps/MomentsApp";
 
 type Screen =
   | {
@@ -92,6 +93,18 @@ export default function App() {
               onBack={goHome}
               onContinue={() => {
                 openApp("moments");
+              }}
+            />
+          )}
+
+        {screen.type === "app" &&
+          (screen.appId === "moments" ||
+            screen.appId === "memories") && (
+            <MomentsApp
+              key="moments"
+              onBack={goHome}
+              onContinue={() => {
+                openApp("letter");
               }}
             />
           )}
