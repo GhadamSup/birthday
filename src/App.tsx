@@ -12,6 +12,8 @@ import MessagesApp from "./apps/MessagesApp";
 import GalleryApp from "./apps/GalleryApp";
 import MusicApp from "./apps/MusicApp";
 import MomentsApp from "./apps/MomentsApp";
+import LetterApp from "./apps/LetterApp";
+import GiftApp from "./apps/GiftApp";
 
 type Screen =
   | {
@@ -106,6 +108,25 @@ export default function App() {
               onContinue={() => {
                 openApp("letter");
               }}
+            />
+          )}
+
+        {screen.type === "app" &&
+          screen.appId === "letter" && (
+            <LetterApp
+              key="letter"
+              onBack={goHome}
+              onContinue={() => {
+                openApp("gift");
+              }}
+            />
+          )}
+
+        {screen.type === "app" &&
+          screen.appId === "gift" && (
+            <GiftApp
+              key="gift"
+              onBack={goHome}
             />
           )}
       </AnimatePresence>
