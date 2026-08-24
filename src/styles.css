@@ -2666,47 +2666,6 @@ button {
     30px 25px;
 }
 
-.gift-back {
-  position: absolute;
-
-  top: max(
-    22px,
-    env(safe-area-inset-top)
-  );
-
-  left: 20px;
-
-  width: 42px;
-  height: 42px;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 50%;
-
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.08);
-
-  background:
-    rgba(255, 255, 255, 0.06);
-
-  color:
-    rgba(255, 255, 255, 0.7);
-
-  backdrop-filter:
-    blur(20px);
-
-  -webkit-backdrop-filter:
-    blur(20px);
-
-  font-size: 20px;
-
-  cursor: pointer;
-
-  z-index: 5;
-}
-
 .gift-intro {
   position: relative;
 

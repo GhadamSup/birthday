@@ -112,7 +112,8 @@ export default function App() {
           )}
 
         {screen.type === "app" &&
-          screen.appId === "letter" && (
+          (screen.appId === "letter" ||
+            screen.appId === "notes") && (
             <LetterApp
               key="letter"
               onBack={goHome}
