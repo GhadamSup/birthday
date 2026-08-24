@@ -87,7 +87,7 @@ export default function MomentsApp({
         <div className="moments-timeline">
           <div className="moments-line" />
 
-          {moments.map((moment, index) => (
+          {moments.map((moment) => (
             <motion.div
               key={moment.id}
               className="moment"
