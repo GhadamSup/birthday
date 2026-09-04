@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronRight, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import AppWindow from "../components/AppWindow";
 
 interface GalleryAppProps {
   onBack: () => void;
+  onContinue: () => void;
 }
 
 interface GalleryItem {
@@ -17,41 +18,56 @@ interface GalleryItem {
 const galleryItems: GalleryItem[] = [
   {
     id: 1,
-    image: "/gallery/cake.jpg",
+    image: `${import.meta.env.BASE_URL}gallery/cake.jpg`,
     caption: "This one's yours. 🎂",
   },
   {
     id: 2,
-    image: "/gallery/balloons.jpg",
+    image: `${import.meta.env.BASE_URL}gallery/balloons.jpg`,
     caption: "A little celebration. 🎈",
   },
   {
     id: 3,
-    image: "/gallery/gift.jpg",
+    image: `${import.meta.env.BASE_URL}gallery/gift.jpg`,
     caption: "Something for you. 🎁",
   },
   {
     id: 4,
-    image: "/gallery/sparkles.jpg",
+    image: `${import.meta.env.BASE_URL}gallery/sparkles.jpg`,
     caption: "Because one can never have too many sparkles. ✨",
   },
   {
     id: 5,
-    image: "/gallery/flowers.jpg",
+    image: `${import.meta.env.BASE_URL}gallery/flowers.jpg`,
     caption: "Just because they're pretty. 🌸",
   },
   {
     id: 6,
-    image: "/gallery/cute.jpg",
+    image: `${import.meta.env.BASE_URL}gallery/cute.jpg`,
     caption: "Okay, this one is just cute.",
   },
 ];
 
 export default function GalleryApp({
   onBack,
+  onContinue,
 }: GalleryAppProps) {
   const [selectedItem, setSelectedItem] =
     useState<GalleryItem | null>(null);
+
+  useEffect(() => {
+    if (!selectedItem) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedItem(null);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () =>
+      document.removeEventListener("keydown", handleKeyDown);
+  }, [selectedItem]);
 
   return (
     <AppWindow
@@ -116,6 +132,18 @@ export default function GalleryApp({
             ),
           )}
         </div>
+
+        <motion.button
+          className="gallery-continue glass"
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          onClick={onContinue}
+        >
+          Keep going
+          <ChevronRight size={16} />
+        </motion.button>
 
         <AnimatePresence>
           {selectedItem && (

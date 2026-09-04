@@ -36,6 +36,9 @@ export default function MusicApp({
     const [liked, setLiked] =
         useState(false);
 
+    const [loaded, setLoaded] =
+        useState(false);
+
     useEffect(() => {
         const audio = audioRef.current;
 
@@ -43,6 +46,7 @@ export default function MusicApp({
 
         const handleLoadedMetadata = () => {
             setDuration(audio.duration);
+            setLoaded(true);
         };
 
         const handleTimeUpdate = () => {
@@ -140,7 +144,7 @@ export default function MusicApp({
             <div className="music-app">
                 <audio
                     ref={audioRef}
-                    src="/music/birthday-song.mp3"
+                    src={`${import.meta.env.BASE_URL}music/birthday-song.mp3`}
                     preload="metadata"
                 />
 
@@ -159,7 +163,7 @@ export default function MusicApp({
                     }}
                 >
                     <img
-                        src="/music/cover.jpg"
+                        src={`${import.meta.env.BASE_URL}music/cover.jpg`}
                         alt="Album cover"
                     />
 
@@ -199,15 +203,18 @@ export default function MusicApp({
                 </div>
 
                 <div className="music-progress">
-                    <input
-                        type="range"
-                        min="0"
-                        max={duration || 0}
-                        value={progress}
-                        onChange={seek}
-                        disabled={!duration}
-                        aria-label="Song progress"
-                    />
+                    {loaded ? (
+                        <input
+                            type="range"
+                            min="0"
+                            max={duration || 0}
+                            value={progress}
+                            onChange={seek}
+                            aria-label="Song progress"
+                        />
+                    ) : (
+                        <div className="music-progress-loading" />
+                    )}
 
                     <div className="music-times">
                         <span>
@@ -257,9 +264,6 @@ export default function MusicApp({
                         <SkipForward size={21} />
                     </button>
                 </div>
-
-                <br></br>
-                <br></br>
 
                 <motion.button
                     className="music-next glass"

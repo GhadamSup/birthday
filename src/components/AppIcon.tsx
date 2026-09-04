@@ -5,6 +5,7 @@ interface AppIconProps {
   name: string;
   icon: LucideIcon;
   gradient: string;
+  badge?: number;
   onClick: () => void;
 }
 
@@ -12,6 +13,7 @@ export default function AppIcon({
   name,
   icon: Icon,
   gradient,
+  badge,
   onClick,
 }: AppIconProps) {
   return (
@@ -28,6 +30,12 @@ export default function AppIcon({
       >
         <Icon size={26} strokeWidth={2.1} />
       </div>
+
+      {badge && badge > 0 && (
+        <span className="app-badge">
+          {badge}
+        </span>
+      )}
 
       <span>{name}</span>
     </motion.button>

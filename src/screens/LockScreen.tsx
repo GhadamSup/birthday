@@ -89,6 +89,9 @@ export default function LockScreen({
 
       <motion.div
         className="unlock-area"
+        tabIndex={0}
+        role="button"
+        aria-label="Swipe up or press Enter to unlock"
         drag="y"
         dragConstraints={{
           top: -170,
@@ -101,6 +104,15 @@ export default function LockScreen({
             info.offset.y < -80 ||
             info.velocity.y < -500
           ) {
+            onUnlock();
+          }
+        }}
+        onKeyDown={(event) => {
+          if (
+            event.key === "Enter" ||
+            event.key === " "
+          ) {
+            event.preventDefault();
             onUnlock();
           }
         }}

@@ -5,25 +5,28 @@ import {
   Music,
   NotebookPen,
   Sparkles,
-  Heart,
+  Search,
 } from "lucide-react";
 import { motion } from "motion/react";
 
 import Dock from "../components/Dock";
-
 import AppIcon from "../components/AppIcon";
+
+import ClockWidget from "../components/widgets/ClockWidget";
+import PhotoWidget from "../components/widgets/PhotoWidget";
 
 interface HomeScreenProps {
   onOpenApp: (appId: string) => void;
 }
 
-const apps = [
+const row1Apps = [
   {
     id: "messages",
     name: "Messages",
     icon: MessageCircle,
     gradient:
       "linear-gradient(145deg, #69e59b, #209b67)",
+    badge: 1,
   },
   {
     id: "photos",
@@ -46,6 +49,9 @@ const apps = [
     gradient:
       "linear-gradient(145deg, #ffe082, #e6a62c)",
   },
+];
+
+const row2Apps = [
   {
     id: "memories",
     name: "Memories",
@@ -83,31 +89,19 @@ export default function HomeScreen({
         ease: [0.16, 1, 0.3, 1],
       }}
     >
-      <header className="home-header">
-        <div>
-          <span className="eyebrow">
-            Monday
-          </span>
-
-          <h1>
-            A little world
-            <br />
-            for you.
-          </h1>
+      <div className="home-grid">
+        <div className="home-grid-clock">
+          <ClockWidget />
         </div>
 
-        <div className="profile-button glass">
-          <Heart
-            size={18}
-            fill="currentColor"
-          />
-        </div>
-      </header>
-
-      <div className="app-grid">
-        {apps.map((app, index) => (
+        {row1Apps.map((app, index) => (
           <motion.div
             key={app.id}
+            className="home-grid-app"
+            style={{
+              gridRow: `${index < 2 ? 1 : 2}`,
+              gridColumn: `${3 + (index % 2)}`,
+            }}
             initial={{
               opacity: 0,
               y: 20,
@@ -128,11 +122,63 @@ export default function HomeScreen({
               name={app.name}
               icon={app.icon}
               gradient={app.gradient}
+              badge={app.badge}
               onClick={() => onOpenApp(app.id)}
             />
           </motion.div>
         ))}
+
+        {row2Apps.map((app, index) => (
+          <motion.div
+            key={app.id}
+            className="home-grid-app"
+            style={{
+              gridRow: "3",
+              gridColumn: `${1 + index}`,
+            }}
+            initial={{
+              opacity: 0,
+              y: 20,
+              scale: 0.8,
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1,
+            }}
+            transition={{
+              delay: 0.28 + index * 0.05,
+              duration: 0.45,
+              ease: [0.16, 1, 0.3, 1],
+            }}
+          >
+            <AppIcon
+              name={app.name}
+              icon={app.icon}
+              gradient={app.gradient}
+              onClick={() => onOpenApp(app.id)}
+            />
+          </motion.div>
+        ))}
+
+        <div className="home-grid-photo">
+          <PhotoWidget onOpenApp={onOpenApp} />
+        </div>
       </div>
+
+      <div className="page-dots">
+        <span className="page-dot active" />
+        <span className="page-dot" />
+      </div>
+
+      <button
+        className="search-pill glass"
+        aria-label="Search"
+      >
+        <Search size={14} />
+        <span>Search</span>
+      </button>
+
       <Dock onOpenApp={onOpenApp} />
     </motion.section>
   );

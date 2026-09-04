@@ -84,6 +84,9 @@ export default function App() {
             <GalleryApp
               key="gallery"
               onBack={goHome}
+              onContinue={() => {
+                openApp("music");
+              }}
             />
           )}
 

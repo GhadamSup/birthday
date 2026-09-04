@@ -69,6 +69,7 @@ export default function GiftApp({
 
                         <motion.button
                             className="gift-box"
+                            aria-label="Open gift"
                             onClick={() =>
                                 setOpened(true)
                             }
